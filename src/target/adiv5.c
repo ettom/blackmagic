@@ -123,7 +123,6 @@ static const char * const cidc_debug_strings[] =
 enum arm_arch {
 	aa_nosupport,
 	aa_cortexm,
-	aa_cortexa,
 	aa_end
 };
 
@@ -236,10 +235,6 @@ static const struct {
 	{0x9a5, 0x00, 0,      aa_nosupport, cidc_unknown, PIDR_PN_BIT_STRINGS("Cortex-A5 ETM",  "(Embedded Trace)")},
 	{0x9a7, 0x16, 0,      aa_nosupport, cidc_unknown, PIDR_PN_BIT_STRINGS("Cortex-A7 PMU",  "(Performance Monitor Unit)")},
 	{0x9af, 0x00, 0,      aa_nosupport, cidc_unknown, PIDR_PN_BIT_STRINGS("Cortex-A15 PMU", "(Performance Monitor Unit)")},
-	{0xc05, 0x00, 0,      aa_cortexa,   cidc_dc,      PIDR_PN_BIT_STRINGS("Cortex-A5 Debug", "(Debug Unit)")},
-	{0xc07, 0x15, 0,      aa_cortexa,   cidc_dc,      PIDR_PN_BIT_STRINGS("Cortex-A7 Debug", "(Debug Unit)")},
-	{0xc08, 0x00, 0,      aa_cortexa,   cidc_dc,      PIDR_PN_BIT_STRINGS("Cortex-A8 Debug", "(Debug Unit)")},
-	{0xc09, 0x00, 0,      aa_cortexa,   cidc_dc,      PIDR_PN_BIT_STRINGS("Cortex-A9 Debug", "(Debug Unit)")},
 	{0xc0f, 0x00, 0,      aa_nosupport, cidc_unknown, PIDR_PN_BIT_STRINGS("Cortex-A15 Debug", "(Debug Unit)")}, /* support? */
 	{0xc14, 0x00, 0,      aa_nosupport, cidc_unknown, PIDR_PN_BIT_STRINGS("Cortex-R4 Debug", "(Debug Unit)")}, /* support? */
 	{0xcd0, 0x00, 0,      aa_nosupport, cidc_unknown, PIDR_PN_BIT_STRINGS("Atmel DSU", "(Device Service Unit)")},
@@ -260,8 +255,6 @@ static const struct {
 	{0xd21, 0x11, 0,      aa_nosupport, cidc_dc,      PIDR_PN_BIT_STRINGS("Cortex-M33", "(Trace Port Interface Unit)")},
 	{0xfff, 0x00, 0,      aa_end,       cidc_unknown, PIDR_PN_BIT_STRINGS("end", "end")}
 };
-
-extern bool cortexa_probe(ADIv5_AP_t *apb, uint32_t debug_base);
 
 void adiv5_ap_ref(ADIv5_AP_t *ap)
 {
@@ -541,10 +534,6 @@ static void adiv5_component_probe(ADIv5_AP_t *ap, uint32_t addr, int recursion, 
 					DEBUG_INFO("%s-> cortexm_probe\n", indent + 1);
 					cortexm_probe(ap);
 					break;
-				case aa_cortexa:
-					DEBUG_INFO("\n -> cortexa_probe\n");
-					cortexa_probe(ap, addr);
-					break;
 				default:
 					DEBUG_INFO("\n");
 					break;
@@ -740,14 +729,6 @@ void adiv5_dp_init(ADIv5_DP_t *dp)
 			return;
 		}
 		last_base = ap->base;
-		extern void kinetis_mdm_probe(ADIv5_AP_t *);
-		kinetis_mdm_probe(ap);
-
-		extern void nrf51_mdm_probe(ADIv5_AP_t *);
-		nrf51_mdm_probe(ap);
-
-		extern void efm32_aap_probe(ADIv5_AP_t *);
-		efm32_aap_probe(ap);
 
 		/* Halt the device and release from reset if reset is active!*/
 		if (!ap->apsel && ((ap->idr & 0xf) == ARM_AP_TYPE_AHB))

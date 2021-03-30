@@ -95,11 +95,7 @@ void dfu_jump_app_if_valid(void)
 	/* Vector table may be anywhere in 128 kByte RAM
 	   CCM not handled*/
 	if((*(volatile uint32_t*)app_address & 0x2FFC0000) == 0x20000000) {
-#if defined(STM32F7)		/* Set vector table base address */
-		SCB_VTOR = app_address & 0xFFFFFF00;
-#else
 		SCB_VTOR = app_address & 0x1FFFFF; /* Max 2 MByte Flash*/
-#endif
 		/* Initialise master stack pointer */
 		asm volatile ("msr msp, %0"::"g"
 		              (*(volatile uint32_t*)app_address));
@@ -107,4 +103,3 @@ void dfu_jump_app_if_valid(void)
 		(*(void(**)())(app_address + 4))();
 	}
 }
-

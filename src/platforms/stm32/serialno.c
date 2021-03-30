@@ -33,15 +33,9 @@ char *serial_no_read(char *s, int max)
 #else
 	/* Use the same serial number as the ST DFU Bootloader.*/
 	uint16_t *uid = (uint16_t *)DESIG_UNIQUE_ID_BASE;
-# if defined(STM32F4)
-	int offset = 3;
-# elif defined(STM32L0) || defined(STM32F3)
-	int offset = 5;
-# endif
 	snprintf(s, max, "%04X%04X%04X",
             uid[1] + uid[5], uid[0] + uid[4], uid[offset]);
 
 #endif
 	return s;
 }
-

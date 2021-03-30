@@ -38,20 +38,13 @@
 static inline void _gpio_set(uint32_t gpioport, uint16_t gpios)
 {
 	GPIO_BSRR(gpioport) = gpios;
-#ifdef STM32F4
-	GPIO_BSRR(gpioport) = gpios;
-#endif
 }
 #define gpio_set _gpio_set
 
 static inline void _gpio_clear(uint32_t gpioport, uint16_t gpios)
 {
-#ifndef STM32F4
-	GPIO_BRR(gpioport) = gpios;
-#else
 	GPIO_BSRR(gpioport) = gpios<<16;
 	GPIO_BSRR(gpioport) = gpios<<16;
-#endif
 }
 #define gpio_clear _gpio_clear
 
@@ -63,4 +56,3 @@ static inline uint16_t _gpio_get(uint32_t gpioport, uint16_t gpios)
 #endif
 
 #endif
-

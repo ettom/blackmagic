@@ -380,53 +380,11 @@ bool cortexm_probe(ADIv5_AP_t *ap)
 	do { if ((x)(t)) {return true;} else target_check_error(t); } while (0)
 
 	switch (ap->ap_designer) {
-	case AP_DESIGNER_FREESCALE:
-		PROBE(kinetis_probe);
-		if (ap->ap_partno == 0x88c) {
-			t->driver = "MIMXRT10xx(no flash)";
-			target_halt_resume(t, 0);
-		}
-		break;
 	case AP_DESIGNER_CS:
 		PROBE(stm32f1_probe);
 		break;
-	case AP_DESIGNER_GIGADEVICE:
-		PROBE(gd32f1_probe);
-		break;
 	case AP_DESIGNER_STM:
 		PROBE(stm32f1_probe);
-		PROBE(stm32f4_probe);
-		PROBE(stm32h7_probe);
-		PROBE(stm32l0_probe);
-		PROBE(stm32l4_probe);
-		PROBE(stm32g0_probe);
-		if (ap->ap_partno == 0x472) {
-			t->driver = "STM32L552(no flash)";
-			target_halt_resume(t, 0);
-		}
-		break;
-	case AP_DESIGNER_CYPRESS:
-		DEBUG_WARN("Unhandled Cypress device\n");
-		break;
-	case AP_DESIGNER_INFINEON:
-		DEBUG_WARN("Unhandled Infineon device\n");
-		break;
-	case AP_DESIGNER_NORDIC:
-		PROBE(nrf51_probe);
-		break;
-	case AP_DESIGNER_ATMEL:
-		PROBE(sam4l_probe);
-		PROBE(samd_probe);
-		PROBE(samx5x_probe);
-		break;
-	case AP_DESIGNER_ENERGY_MICRO:
-		PROBE(efm32_probe);
-		break;
-	case AP_DESIGNER_TEXAS:
-		PROBE(msp432_probe);
-		break;
-	case AP_DESIGNER_SPECULAR:
-		PROBE(lpc11xx_probe); /* LPC845 */
 		break;
 	default:
 		if (ap->ap_designer != AP_DESIGNER_ARM) {
@@ -441,32 +399,7 @@ bool cortexm_probe(ADIv5_AP_t *ap)
 		}
 		if (ap->ap_partno == 0x4c3)  { /* Cortex-M3 ROM */
 			PROBE(stm32f1_probe); /* Care for STM32F1 clones */
-			PROBE(lpc15xx_probe); /* Thanks to JojoS for testing */
-		} else if (ap->ap_partno == 0x471)  { /* Cortex-M0 ROM */
-			PROBE(lpc11xx_probe); /* LPC24C11 */
-			PROBE(lpc43xx_probe);
-		} else if (ap->ap_partno == 0x4c4) { /* Cortex-M4 ROM */
-			/* The LPC546xx and LPC43xx parts present with the same AP ROM Part
-			Number, so we need to probe both. Unfortunately, when probing for
-			the LPC43xx when the target is actually an LPC546xx, the memory
-			location checked is illegal for the LPC546xx and puts the chip into
-			Lockup, requiring a RST pulse to recover. Instead, make sure to
-			probe for the LPC546xx first, which experimentally doesn't harm
-			LPC43xx detection. */
-			PROBE(lpc546xx_probe);
-
-			PROBE(lpc43xx_probe);
-			PROBE(kinetis_probe); /* Older K-series */
-		} else if (ap->ap_partno == 0x4cb) { /* Cortex-M23 ROM */
-			PROBE(gd32f1_probe); /* GD32E23x uses GD32F1 peripherals */
-		} else if (ap->ap_partno == 0x4c0) { /* Cortex-M0+ ROM */
-			PROBE(lpc11xx_probe); /* some of the LPC8xx series, like LPC802 */
 		}
-		/* Info on PIDR of these parts wanted! */
-		PROBE(sam3x_probe);
-		PROBE(lmi_probe);
-		PROBE(ke04_probe);
-		PROBE(lpc17xx_probe);
 	}
 #undef PROBE
 	/* Restart the CortexM we stopped for Romtable scan. Allow pure debug.*/

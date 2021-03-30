@@ -21,10 +21,8 @@ SRC =			\
 	adiv5_jtagdp.c	\
 	adiv5_swdp.c	\
 	command.c	\
-	cortexa.c	\
 	cortexm.c	\
 	crc32.c		\
-	efm32.c		\
 	exception.c	\
 	gdb_if.c	\
 	gdb_main.c	\
@@ -33,31 +31,11 @@ SRC =			\
 	hex_utils.c	\
 	jtag_devs.c	\
 	jtag_scan.c	\
-	lmi.c		\
-	lpc_common.c	\
-	lpc11xx.c	\
-	lpc17xx.c	\
-	lpc15xx.c	\
-	lpc43xx.c	\
-	lpc546xx.c	\
-	kinetis.c	\
 	main.c		\
 	morse.c		\
-	msp432.c	\
-	nrf51.c		\
-	nxpke04.c	\
 	platform.c	\
 	remote.c	\
-	sam3x.c		\
-	sam4l.c		\
-	samd.c		\
-	samx5x.c	\
 	stm32f1.c	\
-	stm32f4.c	\
-	stm32h7.c	\
-	stm32l0.c	\
-	stm32l4.c	\
-	stm32g0.c	\
 	target.c	\
 
 include $(PLATFORM_DIR)/Makefile.inc
