@@ -386,6 +386,9 @@ bool cortexm_probe(ADIv5_AP_t *ap)
 	case AP_DESIGNER_STM:
 		PROBE(stm32f1_probe);
 		break;
+	case AP_DESIGNER_NORDIC:
+		PROBE(nrf51_probe);
+		break;
 	default:
 		if (ap->ap_designer != AP_DESIGNER_ARM) {
 			/* Report unexpected designers */

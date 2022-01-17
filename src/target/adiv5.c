@@ -729,6 +729,9 @@ void adiv5_dp_init(ADIv5_DP_t *dp)
 			return;
 		}
 		last_base = ap->base;
+		extern void nrf51_mdm_probe(ADIv5_AP_t *);
+		nrf51_mdm_probe(ap);
+
 
 		/* Halt the device and release from reset if reset is active!*/
 		if (!ap->apsel && ((ap->idr & 0xf) == ARM_AP_TYPE_AHB))

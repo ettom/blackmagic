@@ -170,4 +170,5 @@ int tc_system(target *t, target_addr cmd, size_t cmdlen);
  * Actual functions implemented in their respective drivers.
  */
 bool stm32f1_probe(target *t);
+bool nrf51_probe(target *t);
 #endif

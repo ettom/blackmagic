@@ -33,6 +33,7 @@ SRC =			\
 	jtag_scan.c	\
 	main.c		\
 	morse.c		\
+	nrf51.c		\
 	platform.c	\
 	remote.c	\
 	stm32f1.c	\
